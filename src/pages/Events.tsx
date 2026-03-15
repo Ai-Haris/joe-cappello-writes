@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import { Calendar } from "lucide-react";
 import PageLayout from "@/components/PageLayout";
 import SubscribeSection from "@/components/SubscribeSection";
 import { supabase } from "@/lib/supabase";
@@ -86,125 +88,53 @@ const Events = () => {
             <div>
               {/* Fallback code remains... */}
             </div>
-          )}
-
-          <div className="space-y-32">
+          )}          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {events.map((event, i) => (
-              <motion.div
+              <motion.article
                 key={event.id}
-                {...fadeUp}
-                transition={{ duration: 0.7, delay: i * 0.1 }}
-                className="space-y-12"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="group h-full"
               >
-                {/* Event Hero Area */}
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-                  <div className="flex flex-col">
-                    <time className="text-xs tracking-[0.4em] uppercase text-accent font-semibold">
-                      {new Date(event.date).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </time>
-                    <h2 className="text-2xl md:text-3xl font-bold text-foreground mt-3 mb-5 leading-tight">
-                      {event.title}
-                    </h2>
-                    <div className="w-10 h-[2px] bg-primary mb-6" />
-                    
-                    {event.image_url && (
-                      <div className="mb-8 rounded-xl overflow-hidden shadow-lg border border-primary/5">
-                        <img 
-                          src={event.image_url} 
-                          alt={event.title} 
-                          className="w-full h-auto max-h-[500px] object-cover" 
-                        />
+                <Link to={`/events/${event.slug || event.id}`} className="flex flex-col h-full rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 bg-white border border-primary/5">
+                  <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+                    {event.image_url ? (
+                      <img
+                        src={event.image_url}
+                        alt={event.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/20">
+                         <Calendar size={64} />
                       </div>
                     )}
-
-                    {event.location && (
-                      <p className="text-sm text-muted-foreground mb-4 font-medium italic">
-                        Location: {event.location}
-                      </p>
-                    )}
-                    <div
-                      className="prose prose-lg max-w-none text-muted-foreground leading-relaxed prose-headings:text-foreground prose-a:text-primary rich-text-content"
-                      dangerouslySetInnerHTML={{ __html: event.description }}
-                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   </div>
-                  {/* Event could have a main image if we add it laterally, but sections are key now */}
-                </div>
 
-                {/* Content Sections for Event */}
-                <div className="space-y-24 mt-12 pl-4 md:pl-12 border-l-2 border-primary/10">
-                  {event.sections.map((section: Section, idx: number) => {
-                    const hasImages = section.images && section.images.length > 0;
-
-                    const ImageGrid = () => (
-                      <div className={`grid gap-4 ${section.images.length === 1 ? 'grid-cols-1' :
-                        section.images.length === 2 ? 'grid-cols-2' :
-                          'grid-cols-1 md:grid-cols-3'
-                        }`}>
-                        {section.images.map((img, iIdx) => (
-                          <motion.div
-                            key={iIdx}
-                            whileHover={{ scale: 1.02, translateY: -4 }}
-                            className="relative rounded-lg overflow-hidden shadow-xl transition-shadow duration-300 hover:shadow-2xl"
-                          >
-                            <img src={img} className="w-full h-auto max-h-[400px] object-contain mx-auto" alt={`Section ${idx + 1} Image ${iIdx + 1}`} />
-                          </motion.div>
-                        ))}
-                      </div>
-                    );
-
-                    const TextContent = () => (
-                      <div className="prose prose-lg max-w-none prose-headings:text-foreground prose-p:text-muted-foreground">
-                        {section.subtitle && (
-                          <h3 className="text-2xl font-bold mb-4 text-foreground">{section.subtitle}</h3>
-                        )}
-                        {section.paragraph && (
-                          <div
-                            className="whitespace-normal leading-relaxed text-muted-foreground rich-text-content"
-                            dangerouslySetInnerHTML={{ __html: section.paragraph }}
-                          />
-                        )}
-                      </div>
-                    );
-
-                    return (
-                      <div key={idx} className="space-y-8">
-                        {section.layout === "images-top" && (
-                          <>
-                            {hasImages && <ImageGrid />}
-                            <TextContent />
-                          </>
-                        )}
-                        {section.layout === "images-bottom" && (
-                          <>
-                            <TextContent />
-                            {hasImages && <ImageGrid />}
-                          </>
-                        )}
-                        {section.layout === "text-left" && (
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                            <TextContent />
-                            {hasImages && <ImageGrid />}
-                          </div>
-                        )}
-                        {section.layout === "text-right" && (
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                            <div className="order-2 lg:order-1">
-                              {hasImages && <ImageGrid />}
-                            </div>
-                            <div className="order-1 lg:order-2">
-                              <TextContent />
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              </motion.div>
+                  <div className="p-6 md:p-8 flex flex-col flex-grow bg-[#FDFBF7]">
+                    <div className="flex flex-col gap-3">
+                      <time className="text-[10px] tracking-[0.3em] uppercase text-accent font-bold">
+                        {new Date(event.date).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "short",
+                          day: "numeric",
+                        })}
+                      </time>
+                      <h2 className="text-xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors duration-300">
+                        {event.title}
+                      </h2>
+                      {event.location && (
+                        <p className="text-xs text-muted-foreground italic">
+                          {event.location}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </motion.article>
             ))}
           </div>
         </div>

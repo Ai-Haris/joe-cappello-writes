@@ -25,6 +25,7 @@ const ManageEvents = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [currentEvent, setCurrentEvent] = useState<any>({
         title: "",
+        slug: "",
         date: "",
         location: "",
         description: "",
@@ -78,8 +79,11 @@ const ManageEvents = () => {
             return;
         }
 
+        const slug = currentEvent.slug || currentEvent.title.toLowerCase().replace(/ /g, "-").replace(/[^\w-]+/g, "");
+
         const eventToSave = {
             ...currentEvent,
+            slug,
             status,
             content: JSON.stringify(currentEvent.sections)
         };
@@ -108,6 +112,7 @@ const ManageEvents = () => {
     const resetForm = () => {
         setCurrentEvent({
             title: "",
+            slug: "",
             date: "",
             location: "",
             description: "",
@@ -442,7 +447,12 @@ const ManageEvents = () => {
                                                         </div>
                                                     </div>
                                                     <div>
-                                                        <CardTitle className="text-xl group-hover:text-primary transition-colors">{event.title}</CardTitle>
+                                                        <CardTitle className="text-xl group-hover:text-primary transition-colors flex items-center gap-2">
+                                                            {event.title}
+                                                            <a href={`/events/${event.slug}`} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                <Eye size={16} />
+                                                            </a>
+                                                        </CardTitle>
                                                         <CardDescription className="flex items-center gap-2 mt-1">
                                                             <span>{new Date(event.date).toLocaleDateString()}</span>
                                                             <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />

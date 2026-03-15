@@ -8,6 +8,7 @@ import Bio from "./pages/Bio";
 import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import Events from "./pages/Events";
+import EventPost from "./pages/EventPost";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import SkeletonsInTheCloset from "./pages/stories/SkeletonsInTheCloset";
@@ -67,6 +68,7 @@ const App = () => (
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/events" element={<Events />} />
+          <Route path="/events/:slug" element={<EventPost />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/stories/skeletons-in-the-closet" element={<SkeletonsInTheCloset />} />
           <Route path="/stories/beginning-at-the-end" element={<BeginningAtTheEnd />} />
