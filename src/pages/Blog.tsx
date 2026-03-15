@@ -165,25 +165,12 @@ const Blog = () => {
                   )}
                   <div className="p-6 md:p-8 flex flex-col flex-grow bg-[#FDFBF7]">
                     <div className="flex flex-col gap-4">
-                      {post.category && (
-                        <span className="text-[10px] tracking-[0.4em] uppercase text-primary font-black">
-                          {post.category}
-                        </span>
-                      )}
                       <h2 className="text-2xl font-bold text-foreground leading-tight group-hover:text-primary transition-colors duration-300">
                         {post.title}
                       </h2>
                       <p className="text-muted-foreground leading-relaxed text-sm font-light line-clamp-3">
                         {post.excerpt}
                       </p>
-                    </div>
-                    
-                    <div className="mt-auto pt-8">
-                       {post.author_credits && (
-                        <p className="text-[11px] italic text-muted-foreground/80 mb-0">
-                          {post.author_credits}
-                        </p>
-                      )}
                     </div>
                   </div>
                 </Link>

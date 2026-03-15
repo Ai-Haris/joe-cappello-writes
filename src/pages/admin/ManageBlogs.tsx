@@ -29,8 +29,6 @@ const ManageBlogs = () => {
         excerpt: "",
         image_url: "",
         video_url: "",
-        category: "",
-        author_credits: "",
         status: "draft",
         sections: [] as Section[]
     });
@@ -134,8 +132,6 @@ const ManageBlogs = () => {
             excerpt: "",
             image_url: "",
             video_url: "",
-            category: "",
-            author_credits: "",
             status: "draft",
             sections: [{ id: Date.now().toString(), subtitle: "", paragraph: "", images: [], layout: 'images-top' }]
         });
@@ -249,22 +245,6 @@ const ManageBlogs = () => {
                                             value={currentPost.title}
                                             onChange={(e) => setCurrentPost({ ...currentPost, title: e.target.value })}
                                             required
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Category</label>
-                                        <Input
-                                            placeholder="e.g. For Laughs, Workplace..."
-                                            value={currentPost.category || ""}
-                                            onChange={(e) => setCurrentPost({ ...currentPost, category: e.target.value })}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium">Author / Illustrator Credits</label>
-                                        <Input
-                                            placeholder="e.g. Illustration by Michelle Kohari"
-                                            value={currentPost.author_credits || ""}
-                                            onChange={(e) => setCurrentPost({ ...currentPost, author_credits: e.target.value })}
                                         />
                                     </div>
                                     <div className="space-y-2">

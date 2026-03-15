@@ -232,12 +232,6 @@ const BlogPost = () => {
         <p className="text-foreground font-semibold italic text-xl text-center">
           Please subscribe. Join me in the search.
         </p>
-
-        {post.author_credits && (
-          <p className="text-center text-muted-foreground italic text-sm mt-10">
-            {post.author_credits}
-          </p>
-        )}
       </div>
 
       <SubscribeSection />
